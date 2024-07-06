@@ -1,0 +1,22 @@
+.profile-container {
+  margin-top: 5rem;
+}
+
+.profile-card {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.profile-title {
+  font-size: 2rem;
+}
+
+.profile-subtitle {
+  font-size: 1.2rem;
+  color: #6c757d;
+  margin-bottom: 1rem;
+}
+
+.profile-button {
+  margin-right: 0.5rem;
+}
