@@ -1,36 +1,42 @@
-// ProfilePage.js
-import React from 'react';
-import { Container, Row, Col, Card, Button } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 
-const ProfilePage = () => {
-  // Mock user data
-  const user = {
-    name: 'John Doe',
-    email: 'johndoe@example.com',
-    bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla quis justo eget urna sagittis feugiat.'
-  };
+function ProfilePage() {
+  const [user, setUser] = useState(null);
+  const token = localStorage.getItem('token'); // Get token from localStorage
+
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/api/profile', {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        setUser(response.data);
+      } catch (error) {
+        console.error('Failed to fetch user profile:', error);
+      }
+    };
+
+    if (token) {
+      fetchUserProfile();
+    }
+  }, [token]);
 
   return (
-    <Container className="mt-5">
-      <Row>
-        <Col md={{ span: 8, offset: 2 }}>
-          <Card>
-            <Card.Body>
-              <Card.Title>Profile</Card.Title>
-              <Card.Subtitle className="mb-2 text-muted">{user.name}</Card.Subtitle>
-              <Card.Text>{user.bio}</Card.Text>
-              <Card.Text>Email: {user.email}</Card.Text>
-              <Link to="/edit-profile" className="btn btn-primary mr-2">
-                Edit Profile
-              </Link>
-              <Button variant="danger">Delete Account</Button>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
-    </Container>
+    <div>
+      <h2>User Profile</h2>
+      {user ? (
+        <div>
+          <p>Email: {user.email}</p>
+          {/* Add other profile information here */}
+        </div>
+      ) : (
+        <p>Loading...</p>
+      )}
+    </div>
   );
-};
+}
 
 export default ProfilePage;

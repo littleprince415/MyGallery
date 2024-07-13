@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
+import axios from 'axios';
 
 const RegisterPage = () => {
   const [formData, setFormData] = useState({
@@ -10,15 +11,36 @@ const RegisterPage = () => {
   });
 
   const { email, password, confirmPassword } = formData;
+  const navigate = useNavigate(); // ใช้ useNavigate สำหรับการนำทางใน React Router v6
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Add your registration logic here (e.g., API call, validation)
-    console.log(formData);
+
+    try {
+      const response = await axios.post('http://localhost:5000/api/register', {
+        email,
+        password,
+        confirmPassword
+      });
+
+      console.log(response.data);
+      alert(response.data.message); // แสดงข้อความจาก backend
+
+      // นำทางไปยังหน้า login หลังจากลงทะเบียนสำเร็จ
+      navigate('/login');
+
+    } catch (error) {
+      if (error.response && error.response.data) {
+        alert('Error: ' + error.response.data.message);
+      } else {
+        console.error('Unexpected error:', error);
+        alert('Unexpected error occurred');
+      }
+    }
   };
 
   return (
@@ -50,7 +72,6 @@ const RegisterPage = () => {
                 required
               />
             </Form.Group>
-
             <Form.Group controlId="formBasicConfirmPassword">
               <Form.Label>Confirm Password</Form.Label>
               <Form.Control
@@ -62,11 +83,10 @@ const RegisterPage = () => {
                 required
               />
             </Form.Group>
-
             <Button variant="primary" type="submit">
               Register
             </Button>
-
+            <br></br>
             <Form.Text className="text-muted mt-3">
               Already have an account? <Link to="/login">Login here</Link>
             </Form.Text>
