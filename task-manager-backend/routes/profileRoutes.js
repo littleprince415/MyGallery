@@ -32,7 +32,7 @@ router.get('/', authMiddleware, async (req, res) => {
 
 // Update profile
 router.put('/', authMiddleware, async (req, res) => {
-  const { email, birthdate, profilePicture } = req.body;
+  const { email, birthdate, profilePicture, username,bio } = req.body;
   try {
     const user = await User.findById(req.user.userId);
     if (!user) {
@@ -41,7 +41,9 @@ router.put('/', authMiddleware, async (req, res) => {
 
     if (email) user.email = email;
     if (birthdate) user.birthdate = birthdate;
+    if (username) user.username = username;
     if (profilePicture) user.profilePicture = profilePicture;
+    if (bio) user.bio = bio;
 
     await user.save();
     res.json(user);

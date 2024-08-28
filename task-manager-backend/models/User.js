@@ -16,6 +16,13 @@ const UserSchema = new mongoose.Schema({
     },
     birthdate: {
         type: Date
+    },
+    username:{
+        type: String,
+        unique: true
+    },
+    bio:{
+        type: String,
     }
 });
 

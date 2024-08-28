@@ -1,60 +1,80 @@
-/* Navbar.css */
+/* src/components/Navbar.css */
 .navbar {
-  background: #333;
-  height: 80px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 1.2rem;
+  background-color: #333;
+  border-bottom: 1px solid #444;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  transition: margin-top 0.5s;
+  padding: 0 20px; /* เพิ่ม padding ด้านข้างเพื่อไม่ให้เนื้อหาชิดขอบจอ */
+  box-sizing: border-box; /* รวม padding และ border ในการคำนวณ width */
 }
 
-.navbar-container {
+.navbar.isDown {
+  margin-top: -62px;
+}
+
+.navbar-inner {
   display: flex;
   justify-content: space-between;
-  height: 80px;
-  z-index: 1;
-  width: 100%;
-  max-width: 1500px;
+  align-items: center;
+  height: 100%;
 }
 
-.nav-menu {
-  display: flex;
-  align-items: center;
+.brand {
+  color: #fff;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.brand .fa-cloud {
+  font-size: 24px;
+  margin-left: 8px;
+}
+
+.nav {
   list-style: none;
-  text-align: center;
-}
-
-.nav-item {
-  height: 80px;
-}
-
-.nav-links {
-  color: #fff;
+  margin: 0;
+  padding: 0;
   display: flex;
-  align-items: center;
+  justify-content: flex-end; /* ชิดขวา */
+  width: 100%;
+}
+
+.nav .nav-item {
+  margin-left: 15px;
+}
+
+.nav .nav-link {
+  color: #fff;
   text-decoration: none;
-  padding: 0 1rem;
-  height: 100%;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
+  font-size: 16px;
+  transition: color 0.3s; /* เพิ่ม transition สำหรับการเปลี่ยนสี */
 }
 
-.nav-links:hover {
-  color: #01bf71;
+.nav .nav-link:hover,
+.nav .nav-link.active {
+  color: #ff69b4; /* เปลี่ยนสีข้อความเป็นสีชมพูเมื่อ hover หรือเป็น active */
 }
 
-.nav-links-button {
+.dropdown-menu {
+  background-color: #333;
   border: none;
-  background: none;
-  color: #fff;
-  display: flex;
-  align-items: center;
-  padding: 0 1rem;
-  height: 100%;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
 }
 
-.nav-links-button:hover {
-  color: #01bf71;
+.dropdown-menu a {
+  color: #fff;
+}
+
+.dropdown-menu a:hover {
+  background-color: #444;
+}
+
+.fa-chevron-down.isDown {
+  transform: rotate(180deg);
+}
+
+.triangle-down.center {
+  text-align: center;
 }

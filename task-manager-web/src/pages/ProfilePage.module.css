@@ -1,73 +1,121 @@
-/* ProfilePage.module.css */
-
+/* สไตล์คอนเทนเนอร์โปรไฟล์ */
 .container {
   max-width: 800px;
-  margin: 0 auto;
+  margin: auto;
   padding: 20px;
-  font-family: Arial, sans-serif;
+  background-color: #f9f9f9; /* พื้นหลังของคอนเทนเนอร์ */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 80px; /* ช่องว่างระหว่าง Navbar และ Profile Container */
 }
 
+/* สไตล์คอนเทนเนอร์โปรไฟล์ */
 .profileContainer {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 20px;
 }
 
+/* สไตล์สำหรับการแสดงรูปโปรไฟล์ */
 .profilePictureContainer {
-  flex-shrink: 0;
+  position: relative;
+  margin-bottom: 20px;
 }
 
 .profilePicture {
-  border-radius: 50%;
   width: 150px;
   height: 150px;
+  border-radius: 50%;
   object-fit: cover;
-  background-color: gray;
+  border: 2px solid #ccc; /* เพิ่มเส้นขอบ */
+  cursor: pointer; /* เปลี่ยนเคอร์เซอร์เป็นมือเมื่อโฮเวอร์ */
 }
 
+/* สไตล์สำหรับ overlay */
+.overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  text-align: center;
+  border-radius: 0 0 50% 50%;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.3s;
+  cursor: pointer;
+}
+
+.profilePictureContainer:hover .overlay {
+  opacity: 1;
+}
+
+.cameraIcon {
+  margin-right: 5px;
+}
+
+.overlayText {
+  font-size: 14px;
+}
+
+/* ซ่อน input file */
+.hiddenFileInput {
+  display: none;
+}
+
+/* สไตล์สำหรับรายละเอียดโปรไฟล์ */
 .profileDetails {
-  flex: 1;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 600px; /* ความกว้างสูงสุดของฟิลด์กรอกข้อมูล */
 }
 
+/* สำหรับการจัดให้ username และ email อยู่ในบรรทัดเดียวกัน */
+.detailsRow {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px; /* ลดช่องว่างระหว่างฟิลด์ */
+}
+
+.label {
+  flex-basis: 45%; /* ความกว้างของ label */
+}
+
+/* ทำให้ช่องกรอกข้อมูลมีความกว้างเท่ากัน */
 .input {
   width: 100%;
-  padding: 8px;
+  padding: 10px;
   margin-top: 5px;
-  border-radius: 4px;
+  border-radius: 5px;
   border: 1px solid #ccc;
-}
-
-.fileInput {
-  margin-top: 5px;
+  background-color: #f9f9f9; /* สีพื้นหลังของช่องกรอกข้อมูล */
 }
 
 .buttonContainer {
+  display: flex;
+  justify-content: center; /* จัดปุ่มให้อยู่ตรงกลาง */
+  gap: 10px; /* ช่องว่างระหว่างปุ่ม */
   margin-top: 20px;
 }
 
-.saveButton {
-  padding: 10px 20px;
-  background-color: #4CAF50;
+.saveButton, .discardButton {
+  background-color: #4CAF50; /* สีพื้นหลังของปุ่มบันทึก */
   color: white;
+  padding: 8px 16px; /* ขนาดของ padding */
   border: none;
-  border-radius: 4px;
+  border-radius: 5px;
   cursor: pointer;
-  margin-right: 10px;
-}
-
-.saveButton:hover {
-  background-color: #45a049;
+  font-size: 14px; /* ขนาดฟอนต์ของปุ่ม */
+  max-width: 150px; /* กำหนดความกว้างสูงสุดของปุ่ม */
+  width: auto; /* ให้ความกว้างของปุ่มเป็นอัตโนมัติ */
+  text-align: center; /* จัดตำแหน่งข้อความในปุ่ม */
 }
 
 .discardButton {
-  padding: 10px 20px;
-  background-color: #f44336;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.discardButton:hover {
-  background-color: #e53935;
+  background-color: #f44336; /* สีพื้นหลังของปุ่มยกเลิก */
 }
