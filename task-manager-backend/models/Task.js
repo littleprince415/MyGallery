@@ -1,12 +1,23 @@
 const mongoose = require('mongoose');
 
 const taskSchema = new mongoose.Schema({
-  title: String,
-  description: String,
+  title: {
+    type: String,
+    required: true
+  },
+  description: {
+    type: String,
+    required: true
+  },
   status: {
     type: String,
-    enum: ['todo', 'in-progress', 'done'],
-    default: 'todo'
+    enum: ['Pending', 'In Progress', 'Completed'],
+    default: 'Pending'
+  },
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
   },
   createdAt: {
     type: Date,
@@ -14,6 +25,4 @@ const taskSchema = new mongoose.Schema({
   }
 });
 
-const Task = mongoose.model('Task', taskSchema);
-
-module.exports = Task; // ตรวจสอบให้แน่ใจว่า Task ถูกส่งออก
+module.exports = mongoose.model('Task', taskSchema);

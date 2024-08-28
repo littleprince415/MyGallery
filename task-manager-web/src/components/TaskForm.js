@@ -1,70 +1,76 @@
-import React, { useState } from 'react';
-import { Container, Row, Col, Form, Button } from 'react-bootstrap';
-import { useHistory } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
-const TaskFormPage = () => {
-  const history = useHistory();
+const TaskForm = ({ task }) => {
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [status, setStatus] = useState('');
 
-  const [task, setTask] = useState({
-    title: '',
-    description: ''
-  });
+  useEffect(() => {
+    if (task) {
+      setTitle(task.title);
+      setDescription(task.description);
+      setStatus(task.status);
+    }
+  }, [task]);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setTask(prevState => ({
-      ...prevState,
-      [name]: value
-    }));
-  };
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Process form submission logic here, e.g., save to database
-    console.log('Submitting Task:', task);
-    // Redirect to task list page after submission
-    history.push('/tasks');
+
+    try {
+      const response = await axios.put(`http://localhost:5000/api/tasks/${task._id}`, {
+        title,
+        description,
+        status
+      }, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+      });
+
+      console.log('Task updated:', response.data);
+      // You can add handling like showing a success message or redirecting
+    } catch (error) {
+      console.error('Failed to update task:', error);
+      // Handle error cases
+    }
   };
 
   return (
-    <Container className="mt-5">
-      <Row>
-        <Col md={{ span: 8, offset: 2 }}>
-          <h2>Add New Task</h2>
-          <Form onSubmit={handleSubmit}>
-            <Form.Group controlId="formTitle">
-              <Form.Label>Title</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter task title"
-                name="title"
-                value={task.title}
-                onChange={handleChange}
-                required
-              />
-            </Form.Group>
-
-            <Form.Group controlId="formDescription">
-              <Form.Label>Description</Form.Label>
-              <Form.Control
-                as="textarea"
-                rows={3}
-                placeholder="Enter task description"
-                name="description"
-                value={task.description}
-                onChange={handleChange}
-                required
-              />
-            </Form.Group>
-
-            <Button variant="primary" type="submit">
-              Save Task
-            </Button>
-          </Form>
-        </Col>
-      </Row>
-    </Container>
+    <div>
+      <h2>Edit Task</h2>
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label>Title:</label>
+          <input
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            required
+          />
+        </div>
+        <div>
+          <label>Description:</label>
+          <textarea
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            required
+          />
+        </div>
+        <div>
+          <label>Status:</label>
+          <input
+            type="text"
+            value={status}
+            onChange={(e) => setStatus(e.target.value)}
+            required
+          />
+        </div>
+        <button type="submit">Update Task</button>
+      </form>
+    </div>
   );
 };
 
-export default TaskFormPage;
+export default TaskForm;

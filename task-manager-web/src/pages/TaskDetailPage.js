@@ -1,35 +1,42 @@
-import React from 'react';
-import { Container, Row, Col, Card, Button } from 'react-bootstrap';
-import { useParams, Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
+import TaskForm from '../components/TaskForm'; // import TaskForm component
 
 const TaskDetailPage = () => {
-  const { id } = useParams(); // เรียกใช้ params ที่ได้รับจาก URL
-  // Mock data ของ task
-  const task = {
-    id: id,
-    title: 'Task Title',
-    description: 'Task Description Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin euismod.'
-    // สามารถเพิ่มข้อมูลเพิ่มเติมตามที่ต้องการได้
-  };
+  const { id } = useParams();
+  const [task, setTask] = useState(null);
+
+  useEffect(() => {
+    const fetchTask = async () => {
+      try {
+        const response = await axios.get(`http://localhost:5000/api/tasks/${id}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+          }
+        });
+        setTask(response.data);
+      } catch (error) {
+        console.error('Error fetching task:', error);
+      }
+    };
+
+    fetchTask();
+  }, [id]);
+
+  if (!task) {
+    return <div>Loading...</div>;
+  }
 
   return (
-    <Container className="mt-5">
-      <Row>
-        <Col md={{ span: 8, offset: 2 }}>
-          <Card>
-            <Card.Body>
-              <Card.Title>{task.title}</Card.Title>
-              <Card.Text>{task.description}</Card.Text>
-              <Link to={`/tasks/${task.id}/edit`} className="btn btn-primary mr-2">
-                Edit
-              </Link>
-              <Button variant="danger">Delete</Button>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
-    </Container>
+    <div>
+      <h2>Task Detail</h2>
+      <p>Title: {task.title}</p>
+      <p>Description: {task.description}</p>
+      {/* Render TaskForm component here */}
+      <TaskForm task={task} />
+    </div>
   );
 };
 
-export default TaskDetailPage; // ต้องการแน่ใจว่า export ออกมาในรูปแบบนี้ถูกต้อง
+export default TaskDetailPage;

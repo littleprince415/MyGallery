@@ -1,3 +1,4 @@
+// src/components/Navbar.js
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './Navbar.css'; // Import CSS file for styling
@@ -10,16 +11,16 @@ const Navbar = ({ isLoggedIn, handleLogout }) => {
           <li className="nav-item">
             <Link to="/" className="nav-links">Home</Link>
           </li>
-          <li className="nav-item">
-            <Link to="/tasks" className="nav-links">Tasks</Link>
-          </li>
-          <li className="nav-item">
-            <Link to="/profile" className="nav-links">Profile</Link>
-          </li>
           {isLoggedIn ? (
             <>
               <li className="nav-item">
-                <button onClick={handleLogout} className="nav-links">Logout</button>
+                <Link to="/profile" className="nav-links">Profile</Link>
+              </li>
+              <li className="nav-item">
+                <Link to="/tasks" className="nav-links">Tasks</Link>
+              </li>
+              <li className="nav-item">
+                <Link to="/login" onClick={handleLogout} className="nav-links">Logout</Link>
               </li>
             </>
           ) : (

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import TaskForm from '../components/TaskForm';
 
-function TaskList() {
+function TaskListPage() {
   const [tasks, setTasks] = useState([]);
 
   useEffect(() => {
@@ -30,8 +31,9 @@ function TaskList() {
           <li key={task._id}>{task.title}</li>
         ))}
       </ul>
+
     </div>
   );
 }
 
-export default TaskList;
+export default TaskListPage;

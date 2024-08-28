@@ -14,17 +14,13 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    // Function to check token in localStorage
+    // Check token on component mount
     const checkLoginStatus = () => {
       const token = localStorage.getItem('token');
-      if (token) {
-        setIsLoggedIn(true); // User is logged in
-      } else {
-        setIsLoggedIn(false); // User is not logged in
-      }
+      setIsLoggedIn(!!token); // Set login state based on token presence
     };
 
-    checkLoginStatus(); // Check status on component mount
+    checkLoginStatus(); // Initial check
 
     // Listen to changes in localStorage (e.g., logout)
     window.addEventListener('storage', checkLoginStatus);
@@ -35,24 +31,24 @@ function App() {
     };
   }, []);
 
-  const handleLogout = () => {
-    // Clear token from localStorage and update isLoggedIn state
-    localStorage.removeItem('token');
-    setIsLoggedIn(false);
+  const handleLogin = () => {
+    setIsLoggedIn(true); // Update login state
   };
 
-  console.log('isLoggedIn in App:', isLoggedIn);
+  const handleLogout = () => {
+    localStorage.removeItem('token'); // Remove token from localStorage
+    setIsLoggedIn(false); // Update login state
+  };
 
   return (
     <Router>
       <div className="App">
         <header>
           <Navbar isLoggedIn={isLoggedIn} handleLogout={handleLogout} />
-          <h1>Task Manager</h1>
         </header>
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/login" element={<LoginPage handleLogin={() => setIsLoggedIn(true)} />} />
+          <Route path="/login" element={<LoginPage handleLogin={handleLogin} />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/tasks" element={<TaskListPage />} />
           <Route path="/tasks/new" element={<TaskFormPage />} />
